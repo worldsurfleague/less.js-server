@@ -26,3 +26,14 @@ Usage
     $ curl "http://127.0.0.1:8000/?lessFilePath=%2Fhome%2Fbdalziel%2FtestFile.less&cssFilePath=%2Fhome%2Fbdalziel%2FtestFile.css&paths=%2Fhome%2Fbdalziel%2F
 
     // Magic!
+
+Docker
+=====
+      docker build . -t less-server && \
+      docker run \
+        -dit \
+        -v `pwd`/files/:/home/wsl/files \
+        -p 8000:8000 \
+        --name less-server-test \
+        --restart=always \
+        107275182030.dkr.ecr.us-west-2.amazonaws.com/less-server

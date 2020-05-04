@@ -20,7 +20,7 @@ var port = 8000;
  */
 http.createServer(function (req, res) {
     handleCompileLessFileRequest (req, res);
-}).listen(port, ip);
+}).listen(port);//, ip);
 
 console.log("\n====================================================================");
 console.log('| Created by Ben Dalziel: https://github.com/SlyTrunk/less.js-server');
@@ -42,7 +42,7 @@ function handleCompileLessFileRequest (req, res) {
     // First read the LESS file
     fs.readFile(lessFilePath, 'utf8', function (err, lessFileContents) {
         if (err) {
-            less.writeError(err);
+            console.error(err);
             return reqErr(res, err, "LESS FILE READ ERROR: Line " + err.line + ', ' + err.message + '. File: ' + lessFilePath);
         }
         compileLessFile(res, lessFileContents, lessFilePath, cssFilePath, paths, compileToFile);
@@ -62,11 +62,11 @@ function compileLessFile(res, lessFileContents, lessFilePath, cssFilePath, paths
                      if (compilationError) {
                          // Log Paths to help with debuggin - often an issue with include precedence
                          console.log("PATHS (in order of precedence)): \n" + paths.split(',').join("\n"));
-                         less.writeError(compilationError);
+                         console.error(compilationError);
                          return reqErr(res, compilationError, "LESS PARSER ERROR: Line " + compilationError.line + ', ' + compilationError.message + '. File: ' + lessFilePath);
                      }
                      if (compileToFile) {
-                         writeCompiledOutputToCssFile(res, compiledCssOutput, cssFilePath);
+                         writeCompiledOutputToCssFile(res, compiledCssOutput.css, cssFilePath);
                      }
                  } );
 }
@@ -83,7 +83,7 @@ function writeCompiledOutputToCssFile (res, css, path) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end("LESS compilation Success! \n");
     } catch (err) {
-        less.writeError(err);
+        console.error(err);
         return reqErr(res, err, "FILE WRITE ERROR: " + err.message);
     }
 }
