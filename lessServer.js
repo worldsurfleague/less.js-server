@@ -20,7 +20,7 @@ var port = 8000;
  */
 http.createServer(function (req, res) {
     handleCompileLessFileRequest (req, res);
-}).listen(port);//, ip);
+}).listen(port);
 
 console.log("\n====================================================================");
 console.log('| Created by Ben Dalziel: https://github.com/SlyTrunk/less.js-server');
